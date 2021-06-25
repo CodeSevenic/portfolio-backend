@@ -61,8 +61,7 @@ router.post('/contact', (req, res) => {
   // 3.send the message with sendmail
   smtpTransport.sendMail(mailOptions, (err) => {
     try {
-      if (err)
-        return res.status(400).json({ msg: 'Please fill all the fields' });
+      if (err) return res.status(400).json({ msg: err });
 
       res
         .status(200)
