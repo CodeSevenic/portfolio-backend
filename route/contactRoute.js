@@ -1,5 +1,8 @@
 const router = require('express').Router();
 const nodemailer = require('nodemailer');
+const google = require('googleapis');
+const config = require('../config');
+const OAuth2 = google.Auth.OAuth2Client;
 
 // nodemailer is a module created in  node.js and has been created in order to send mails
 
@@ -13,8 +16,13 @@ const nodemailer = require('nodemailer');
 
 // 3.deliver a message with sendmail
 
+const OAuth2_Client = new OAuth2(config.client_ID, config.Client_Secret);
+OAuth2_Client.setCredentials({ refresh_token: config.Refresh_Token });
+
 router.post('/contact', (req, res) => {
   let data = req.body;
+
+  const accessToken = OAuth2_Client.getAccessToken();
 
   // if the fields are empty we want to appear a message
   if (
@@ -33,8 +41,13 @@ router.post('/contact', (req, res) => {
 
     // authenticate
     auth: {
-      user: 'sevenicbookings@gmail.com',
+      type: 'OAuth2',
+      user: config.user,
       pass: process.env.EMAIL_PASSWORD,
+      clientId: config.client_ID,
+      clientSecret: config.Client_Secret,
+      refreshToken: config.Refresh_Token,
+      accessToken: accessToken,
     },
   });
   // define the mailoptions
