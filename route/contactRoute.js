@@ -68,6 +68,7 @@ router.post('/contact', (req, res) => {
         .json({ msg: 'Thank you for contacting Sibusiso Shongwe!' });
     } catch (err) {
       if (err) return res.status(500).json({ msg: 'There is server error' });
+      if (err) return res.status(400).json({ msg: 'There is server error' });
     }
   });
 });
